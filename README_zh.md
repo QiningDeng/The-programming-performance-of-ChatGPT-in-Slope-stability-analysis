@@ -15,3 +15,15 @@ S. Sysala, E. Hrubešová, Z. Michalec, F. Tschuchnigg: “Optimization and vari
 S. Sysala, F. Tschuchnigg, E. Hrubešová, Z. Michalec: “Optimization variant of the shear strength reduction method and its usage for stability of embankments with unconfined seepage,” Computers and Structures, 281 (2023), 文章编号 107033。
 
 该案例研究假设边坡几何形状固定，重点分析均质土体的稳定性，未考虑地下水影响。未来工作将扩展该方法，以分析多层土、地下水渗流、地震作用及其他复杂工况下的场景，从而提升方法的适用性。
+
+# 运行环境
+
+代码测试运行所使用的环境如下，供参考：
+
+Python = 3.12.3
+
+极限平衡法下的Python运行环境需求程序包 numpy=1.26.4、pandas=2.2.2、matplotlib=3.9.2、tkinter 及 sys。
+
+强度折减法下的Python运行环境需求程序包 numpy=1.26.4、scipy=1.13.1、cupy-cuda12x=13.3.0。其中，cupy-cuda12x为实现GPU加速稀疏矩阵线性方程组迭代求解过程的必要程序包。依据不同的计算机显卡类型及驱动程序版本需要进行不同的CUDA环境配置，具体可参见CUDA项目“https://github.com/NVIDIA/cuda-samples”。
+
+请下载完整的存储库的ZIP文件进行使用。

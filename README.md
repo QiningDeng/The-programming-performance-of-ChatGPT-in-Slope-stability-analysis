@@ -14,7 +14,7 @@ S. Sysala, E. Hrubešová, Z. Michalec, F. Tschuchnigg: "Optimization and variat
 
 S. Sysala, F. Tschuchnigg, E. Hrubešová, Z. Michalec: "Optimization variant of the shear strength reduction method and its usage for stability of embankments with unconfined seepage," Computers and Structures, 281 (2023), Article 107033.
 
-The case study assumes a fixed three-dimensional slope geometry, focusing on the stability analysis of homogeneous soil without considering groundwater effects. Future work will extend the methodology to analyze scenarios involving multi-layered soil, groundwater seepage, seismic effects, and other complex conditions to enhance applicability.
+The case study assumes that the three-dimensional geometry of the slope is trapezoid, focusing on the stability analysis of homogeneous soil without considering groundwater effects. Future work will extend the methodology to analyze scenarios involving multi-layered soil, groundwater seepage, seismic effects, and other complex conditions to enhance applicability.
 
 # Operating Environment
 

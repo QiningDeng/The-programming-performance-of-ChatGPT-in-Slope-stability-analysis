@@ -8,7 +8,7 @@ The limit equilibrium method is based on the three-dimensional simplified Janbu 
 
 The strength reduction method is realized through three key components: the computation of finite element basic equations, the strength reduction process, and the establishment of a nonlinear elastic-plastic constitutive model with Newton's iterative solution. The computational logic and theoretical framework of the strength reduction method, with the owner's consent, reference the MATLAB source code available at https://github.com/sysala/SSRM.
 
-Code testing and validation are further aligned with the computational theory described in the following references:
+Code testing and validation under strength reduction method are further aligned with the computational theory described in the following references:
 
 S. Sysala, E. Hrubešová, Z. Michalec, F. Tschuchnigg: "Optimization and variational principles for the shear strength reduction method," International Journal for Numerical and Analytical Methods in Geomechanics, 45 (2021), pp. 2388–2407.
 

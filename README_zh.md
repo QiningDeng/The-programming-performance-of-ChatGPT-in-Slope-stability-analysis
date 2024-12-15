@@ -8,7 +8,7 @@
 
 强度折减法通过以下三个关键部分实现：有限元基本方程的计算、强度折减过程以及基于牛顿迭代法的非线性弹塑性本构模型的建立。强度折减法的计算逻辑与理论框架（经所有者许可）参考了 MATLAB 源代码。
 
-代码测试和验证过程中与以下参考文献中的计算理论保持一致：
+强度折减法的代码测试和验证与以下参考文献中的计算理论保持一致：
 
 S. Sysala, E. Hrubešová, Z. Michalec, F. Tschuchnigg: “Optimization and variational principles for the shear strength reduction method,” International Journal for Numerical and Analytical Methods in Geomechanics, 45 (2021), 第 2388–2407 页。
 

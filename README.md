@@ -24,6 +24,6 @@ Python = 3.12.3
 
 For the Python operating environment required under the Limit Equilibrium Method, the necessary packages are: numpy=1.26.4, pandas=2.2.2, matplotlib=3.9.2, tkinter and sys.
 
-For the Python operating environment required under the Strength Reduction Method, the necessary packages are: numpy=1.26.4, scipy=1.13.1 and cupy-cuda12x=13.3.0. Among them, cupy-cuda12x is an essential package for implementing GPU-accelerated iterative solving of sparse matrix linear equations. Depending on the type of computer graphics card and the version of the drivers, different CUDA environment configurations are required. For more details, refer to the CUDA project at “https://github.com/NVIDIA/cuda-samples”.
+For the Python operating environment required under the Strength Reduction Method, the necessary packages are: numpy=1.26.4, scipy=1.13.1 and cupy-cuda12x=13.3.0. Among them, cupy-cuda12x is an essential package for implementing GPU-accelerated iterative solving of sparse matrix linear equations. Depending on the type of computer graphics card and the version of the drivers, different CUDA environment configurations are required. For more details, refer to the CUDA project at “[https://github.com/NVIDIA/cuda-samples](https://github.com/NVIDIA/cuda-samples)”.
 
 Please download the ZIP file of the complete repository for use.

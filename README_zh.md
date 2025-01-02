@@ -24,6 +24,6 @@ Python = 3.12.3
 
 极限平衡法下的Python运行环境需求程序包 numpy=1.26.4、pandas=2.2.2、matplotlib=3.9.2、tkinter 及 sys。
 
-强度折减法下的Python运行环境需求程序包 numpy=1.26.4、scipy=1.13.1、cupy-cuda12x=13.3.0。其中，cupy-cuda12x为实现GPU加速稀疏矩阵线性方程组迭代求解过程的必要程序包。依据不同的计算机显卡类型及驱动程序版本需要进行不同的CUDA环境配置，具体可参见CUDA项目“https://github.com/NVIDIA/cuda-samples”。
+强度折减法下的Python运行环境需求程序包 numpy=1.26.4、scipy=1.13.1、cupy-cuda12x=13.3.0。其中，cupy-cuda12x为实现GPU加速稀疏矩阵线性方程组迭代求解过程的必要程序包。依据不同的计算机显卡类型及驱动程序版本需要进行不同的CUDA环境配置，具体可参见CUDA项目“[https://github.com/NVIDIA/cuda-samples](https://github.com/NVIDIA/cuda-samples)”。
 
 请下载完整的存储库的ZIP文件进行使用。

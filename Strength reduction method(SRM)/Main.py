@@ -1,27 +1,29 @@
-import numpy as np
-import matplotlib.pyplot as plt
-from scipy.optimize import curve_fit
-import matplotlib.font_manager as fm
+import torch
 import random
 import scipy.sparse
+import numpy as np
+import torch.nn as nn
+import torch.optim as optim
+import matplotlib.pyplot as plt
+import matplotlib.font_manager as fm
 from A_mesh import mesh
 from B_DCM import DCM
 
 # 定义几何参数
-x1 = 10  # 坡体前段平台长度
-x2 = 7 # 坡体自身长度
-x3 = 10  # 坡体后段平台长度
-y1 = 10  # 坡体前段平台高度
-y2 = 8  # 坡体自身高度
-z = 10  # 坡体宽度
+x1 = 1  # 坡体前段平台长度
+x2 = 11 # 坡体自身长度
+x3 = 7  # 坡体后段平台长度
+y1 = 20  # 坡体前段平台高度
+y2 = 19  # 坡体自身高度
+z = 18  # 坡体宽度
 
 # 土体材料物理参数及网格划分参数
-gamma = 17 # 土体自重
-c0 = 30 # 土体的粘聚力
-phi = 20 # 土体内摩擦角
-E = 37500 # 材料弹性模量
-v = 0.30 # 材料泊松比
-psi = 0.10 # 材料剪胀角
+gamma = 21.5678212276448 # 土体自重
+c0 = 5.94314740484362 # 土体的粘聚力
+phi = 18.4713208434874 # 土体内摩擦角
+E = 88806051.4072064 # 材料弹性模量
+v = 0.148393529064796 # 材料泊松比
+psi = 0.098406969685184 # 材料剪胀角
 G = E / ( 2 * ( 1 + v )) # 材料剪切模量
 K = E / ( 3 * ( 1 - 2 * v )) # 材料体积模量
 lamlda = K - 2 * G / 3 # 材料第一拉梅参数 λ
@@ -232,7 +234,7 @@ f_V = np.vstack([
 f = f_V
 
 # 强度折减法计算参数
-lambda_init = 0.8 # 初始折减因子
+lambda_init = 0.10 # 初始折减因子
 d_lambda_init = 0.1 # 初始增量
 d_lambda_min = 1e-3 # 最小增量
 step_max = 50 # 最大步数
@@ -249,29 +251,103 @@ U2, lambda_hist2, omega_hist2 = DCM (lambda_init, d_lambda_init, d_lambda_min, s
                                      it_damp_max, tol, r_min, r_damp, WEIGHT, B, K_elast, Q, f,
                                      matrix_c0, matrix_phi, matrix_psi, matrix_G, matrix_K, matrix_lamlda)
 
-# 设置中文字体路径（Windows宋体路径）
-font_path = "C:\\Windows\\Fonts\\simsun.ttc"  # 使用宋体字体
-my_font = fm.FontProperties(fname=font_path)
 
-# 提取数据
+# 提取原始数据
 x_values = omega_hist2[0]
 y_values = lambda_hist2[0]
 
-# 定义逻辑函数模型
-def logistic(x, a, b, c):
-    return c / (1 + a * np.exp(-b * x))
+# 生成布尔掩码
+mask = x_values > 0
 
-# 曲线拟合
-x_values = np.maximum(x_values, 0)  # 确保 x_values 中没有负值或零
-weights = np.sqrt(x_values / max(x_values))  # 计算权重
+# 应用掩码筛选
+x_values = x_values[mask]
+y_values = y_values[mask]
 
-# 曲线拟合，添加 sigma 参数
-popt, pcov = curve_fit(
-    logistic, x_values, y_values, p0=(1, 0.01, 1), sigma=1 / weights
-)
+X = x_values.reshape(-1, 1)
+Y = y_values.reshape(-1, 1)
 
-# 使用拟合参数计算拟合曲线的 y 值
-y_fit = logistic(x_values, *popt)
+# 数据标准化
+X_mean, X_std = X.mean(), X.std()
+X_normalized = (X - X_mean) / X_std
+
+# 计算权重
+x_values = X.flatten()
+max_x = np.max(x_values)
+weights = np.sqrt(x_values / max_x)
+weights_tensor = torch.tensor(weights, dtype=torch.float32).reshape(-1, 1)
+
+# 转换为PyTorch张量
+X_tensor = torch.tensor(X_normalized, dtype=torch.float32)
+Y_tensor = torch.tensor(Y, dtype=torch.float32)
+
+# 定义训练模型
+class FixedAsymptoticModel(nn.Module):
+    def __init__(self):
+        super().__init__()
+        self.a = nn.Parameter(torch.randn(1))  # 渐近线下限参数
+        self.b = nn.Parameter(torch.randn(1))  # 增长幅度参数
+        self.c = nn.Parameter(torch.randn(1))  # 增长速率参数
+
+    def forward(self, x):
+        a = torch.nn.functional.softplus(self.a)
+        b = torch.nn.functional.softplus(self.b)
+        c = torch.nn.functional.softplus(self.c)
+        return a / (1 + b * torch.exp(-c * x)) # 逻辑斯蒂拟合目标函数
+
+# 模型训练配置
+model = FixedAsymptoticModel()
+optimizer = optim.Adam(model.parameters(), lr=0.01)
+
+# 模型训练过程
+epochs = 10000
+loss_history = []
+
+for epoch in range(epochs):
+    optimizer.zero_grad()
+    outputs = model(X_tensor)
+    
+    # 加权损失计算
+    losses = (outputs - Y_tensor) ** 2
+    weighted_losses = losses * weights_tensor  # 应用权重
+    loss = weighted_losses.mean()  # 加权平均
+    
+    loss.backward()
+    optimizer.step()
+    
+    loss_history.append(loss.item())
+
+y_limit = torch.nn.functional.softplus(model.a).item()
+
+# 目标拟合函数预测
+with torch.no_grad():
+    X_test_norm = np.linspace(-5, 10, 500).reshape(-1, 1)
+    X_test_tensor = torch.tensor(X_test_norm, dtype=torch.float32)
+
+# 拟合函数导数计算
+X_test_tensor = X_test_tensor.clone().requires_grad_(True)
+y_test = model(X_test_tensor)
+dy_dx = torch.autograd.grad(
+    outputs=y_test,
+    inputs=X_test_tensor,
+    grad_outputs=torch.ones_like(y_test),
+)[0].numpy()
+
+# 预测值反标准化
+with torch.no_grad():
+    Y_pred = model(X_test_tensor).numpy()
+X_test_orig = X_test_norm * X_std + X_mean
+
+# 找到导数最大值的位置（拐点）
+dy_dx_flat = dy_dx.flatten()
+max_deriv_idx = np.argmax(dy_dx_flat)
+
+# 截取拐点后的数据
+X_filtered = X_test_orig[max_deriv_idx:].flatten()
+Y_filtered = Y_pred[max_deriv_idx:].flatten()
+
+# 设置中文字体路径（Windows宋体路径）
+font_path = "C:\\Windows\\Fonts\\simsun.ttc"  # 使用宋体字体
+my_font = fm.FontProperties(fname=font_path)
 
 # 绘制散点图，使用随机颜色和较小的点
 colors = [f"#{random.randint(0, 0xFFFFFF):06x}" for _ in range(len(x_values))]
@@ -279,18 +355,16 @@ for i in range(len(x_values)):
     plt.scatter(x_values[i], y_values[i], color=colors[i], marker='o', s=15)
 
 # 绘制拟合曲线
-fit_label = r'拟合曲线'.format(*popt)
-x_fine = np.linspace(min(x_values), max(x_values), 500)  # 增加点密度以提高拟合曲线平滑性
-y_fine_fit = logistic(x_fine, *popt)
-plt.plot(x_fine, y_fine_fit, color='red', label=fit_label)
+fit_label = r'拟合曲线'
+plt.plot(X_filtered, Y_filtered, color='red', label=fit_label)
 
-# 绘制水平极限线（y 的最大值）
-y_limit = popt[2]  # 逻辑函数中收敛值即为参数 c
+# 绘制水平极限线
+y_limit = torch.nn.functional.softplus(model.a).item()
 plt.axhline(y=y_limit, color='blue', linestyle='--', zorder=0)  # zorder=0 保证水平线在曲线底层
 
 # 动态计算文本位置，使其与 Y 轴标签对齐
 x_range = max(x_values) - min(x_values)  # 计算 x 值的范围
-text_x_position = min(x_values) - 0.06 * x_range  # 在 x 最小值基础上向左偏移 6% 的范围
+text_x_position = min(x_values) - 0.20 * x_range  # 在 x 最小值基础上向左偏移 6% 的范围
 
 # 计算 y 轴的刻度范围
 y_ticks = plt.gca().get_yticks()
@@ -310,7 +384,6 @@ for tick in y_ticks:
 else:
     # 如果没有重叠，保持原位置
     adjusted_y_limit = y_limit
-
 
 # 更新水平线标注
 plt.text(
@@ -333,3 +406,4 @@ plt.grid(True)
 plt.savefig("high_res_plot.png", dpi=1000, bbox_inches='tight')  # 保存图像到文件，分辨率为1000 PPI
 plt.show()
 
+print (y_limit)

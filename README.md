@@ -1,7 +1,5 @@
 # 📚Introduction
 
-[中文版本 (In Chinese)](README_zh.md)
-
 Three-dimensional slope stability analysis has been selected as a case study to evaluate ChatGPT's performance in assisting with engineering computation tasks. Two methods for calculating slope stability coefficients, namely the limit equilibrium method and the strength reduction method, are implemented using Python through standardized programming practices. A systematic ChatGPT-assisted programming approach for 3D slope stability analysis is proposed.
 
 The limit equilibrium method is based on the three-dimensional simplified Janbu method. Geometric and mechanical parameters within each potential sliding surface region are calculated iteratively, followed by the computation of stability coefficients for each sliding surface. The minimum stability coefficient is identified through comparison, and the corresponding sliding surface is determined as the potential critical surface.
@@ -39,3 +37,7 @@ Based on the general range of slope parameters, a small validation dataset of 70
 </p>
 
 In the future, the number of validation data sets will continue to be expanded to better evaluate the calculation accuracy under the strength reduction method.
+
+# ✨Contact
+
+If you have any questions, please email `1974739605ngyx@gmail.com`.

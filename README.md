@@ -16,7 +16,7 @@ S. Sysala, F. Tschuchnigg, E. Hrubešová, Z. Michalec: "Optimization variant of
 
 The case study assumes that the three-dimensional geometry of the slope is trapezoid, focusing on the stability analysis of homogeneous soil without considering groundwater effects. Future work will extend the methodology to analyze scenarios involving multi-layered soil, groundwater seepage, seismic effects, and other complex conditions to enhance applicability.
 
-# Operating Environment
+# ⚙️Operating Environment
 
 The environment used for testing the code is as follows for reference:
 
@@ -27,3 +27,12 @@ For the Python operating environment required under the Limit Equilibrium Method
 For the Python operating environment required under the Strength Reduction Method, the necessary packages are: numpy=1.26.4, scipy=1.13.1 and cupy-cuda12x=13.3.0. Among them, cupy-cuda12x is an essential package for implementing GPU-accelerated iterative solving of sparse matrix linear equations. Depending on the type of computer graphics card and the version of the drivers, different CUDA environment configurations are required. For more details, refer to the CUDA project at “[https://github.com/cupy/cupy](https://github.com/cupy/cupy)”.
 
 Please download the ZIP file of the complete repository for use.
+
+# 📊Code accuracy verification
+
+The strength reduction method can accurately simulate the three-dimensional stress distribution and nonlinear behavior of slope, and deeply reveal the key characteristics of slope stability. Therefore, the strength reduction method is temporarily chosen as the representative method to evaluate the generalization ability of the scheme.
+
+Based on the general range of slope parameters, a small validation dataset of 70 input parameter combinations was built by random sampling.The statistical distribution diagram of the accuracy quantification evaluation indicators of the validation dataset is shown as follows:
+![4 3 相对误差百分比Eng](https://github.com/user-attachments/assets/c31fec7d-6aa4-48ae-8dc2-56bb492e56cc)![4 3 绝对误差值Eng](https://github.com/user-attachments/assets/bcd7a594-4016-4c33-8e84-6747e50585b5)
+
+In the future, the number of validation data sets will continue to be expanded to better evaluate the calculation accuracy under the strength reduction method.

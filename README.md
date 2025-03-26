@@ -33,6 +33,9 @@ Please download the ZIP file of the complete repository for use.
 The strength reduction method can accurately simulate the three-dimensional stress distribution and nonlinear behavior of slope, and deeply reveal the key characteristics of slope stability. Therefore, the strength reduction method is temporarily chosen as the representative method to evaluate the generalization ability of the scheme.
 
 Based on the general range of slope parameters, a small validation dataset of 70 input parameter combinations was built by random sampling.The statistical distribution diagram of the accuracy quantification evaluation indicators of the validation dataset is shown as follows:
-![4 3 相对误差百分比Eng](https://github.com/user-attachments/assets/c31fec7d-6aa4-48ae-8dc2-56bb492e56cc)![4 3 绝对误差值Eng](https://github.com/user-attachments/assets/bcd7a594-4016-4c33-8e84-6747e50585b5)
+<p float="left">
+  <img src="https://github.com/user-attachments/assets/c31fec7d-6aa4-48ae-8dc2-56bb492e56cc" width="45%" />
+  <img src="https://github.com/user-attachments/assets/bcd7a594-4016-4c33-8e84-6747e50585b5" width="45%" />
+</p>
 
 In the future, the number of validation data sets will continue to be expanded to better evaluate the calculation accuracy under the strength reduction method.

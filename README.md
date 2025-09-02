@@ -38,6 +38,11 @@ Based on the general range of slope parameters, a small validation dataset of 72
 
 In the future, the number of validation data sets will continue to be expanded to better evaluate the calculation accuracy under the strength reduction method.
 
+# ✒️Citing Articles
+
+If our project has been helpful to you, please consider the following citation:
+Deng, Q., Cui, Y., Wang J., Zheng J., Xu C., 2025. ChatGPT-assisted programming approach for three-dimensional slope stability analysis. Rock Soil Mech. 46(S1), 322-334. (In Chinese) https://doi.org/10.16285/j.rsm.2024.1570.
+
 # ✨Contact
 
 If you have any questions, please email `1974739605ngyx@gmail.com`.

@@ -38,7 +38,7 @@ Based on the general range of slope parameters, a small validation dataset of 72
 
 In the future, the number of validation data sets will continue to be expanded to better evaluate the calculation accuracy under the strength reduction method.
 
-# ✒️Citing Articles
+# ✒️Citing articles
 
 If our project has been helpful to you, please consider the following citation:
 
